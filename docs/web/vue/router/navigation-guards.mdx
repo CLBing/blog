@@ -1,0 +1,58 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 导航守卫
+
+导航守卫是路由的生命周期。用于在路由调用期间执行特定操作
+
+## 配置
+
+可以调用路由生命周期钩子来配置导航守卫，共有三种配置方式
+
+<Tabs>
+  <TabItem value="global" label="全局配置" default>
+```js title='/src/router/index.js'
+const router = createRouter({...})
+router.beforeEach((to,from)=>{
+    return false
+})
+```
+  </TabItem>
+  <TabItem value="router" label="路由配置">
+```js title='/src/router/index.js'
+const routes = [
+    {
+        path: '/',
+        component: path,
+        beforeEnter: (to, from) => {
+        return false
+        },
+    },
+]
+const router = createRouter({...,routes})
+```
+  </TabItem>
+  <TabItem value="component" label="组件配置">
+```js title='/src/pages/index.vue'
+<script setup>
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+
+onBeforeRouteLeave((to, from) => {})
+onBeforeRouteUpdate((to, from)=>{})
+
+</script>
+```
+  </TabItem>
+</Tabs>
+
+守卫接收参数
+
+- `to`: 跳转目标导航的参数
+- `from`: 当前页面的参数
+
+守卫返回值
+
+- `false`: 取消当前导航
+- 路由地址：可以是一个字符串的路径 '/path' 也可以是一个对象
+
+## 全局导航
