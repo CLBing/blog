@@ -7,9 +7,9 @@ tags: [promise, async]
 keywords: [promise, async, await]
 ---
 
-# promise
+# javascript 异步
 
-## 基础
+## promise 对象
 
 异步执行指的是当程序执行一个长时间事件时不进行等待，而是在等待期间去执行其他事情
 过去 javascript 想要异步调用函数时候使用 `setTimeout()` 函数，当第一个函数执行完成后在执行第二个函数，
@@ -143,7 +143,7 @@ fun()
 async 与 await 是 `promise` 的语法糖，用于简化 promise 操作
 
 - async 可以将函数返回值生成为一个 `promise` 对象
-- await 可以将 `promise` 返回值的 `resolve()` 的值直接作为返回值返回
+- await 可以将 `promise` 中 `resolve()` 的值作为返回值返回
 
 ```javascript
 // 首先定义两个返回 promise 对象的函数
