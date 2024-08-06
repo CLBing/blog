@@ -56,3 +56,122 @@ onBeforeRouteUpdate((to, from)=>{})
 - 路由地址：可以是一个字符串的路径 '/path' 也可以是一个对象
 
 ## 全局导航
+
+- `beforeEach`
+  - 组件跳转前
+- `beforeResolve`
+  - 组件导航中
+- `afterEach`
+  - 组件跳转后
+
+<Tabs>
+  <TabItem value="before" label="beforeEach" default>
+```js title='/src/router/index.js'
+const router = createRouter({ ... })
+
+router.beforeEach((to, from) => {})
+
+````
+  </TabItem>
+  <TabItem value="resolve" label="beforeResolve">
+```js title='/src/router/index.js'
+const router = createRouter({ ... })
+
+router.beforeResolve(to => {})
+````
+
+  </TabItem>
+  <TabItem value="after" label="afterEach">
+```js title='/src/router/index.js'
+const router = createRouter({ ... })
+
+router.afterEach((to, from) => {})
+
+````
+  </TabItem>
+</Tabs>
+
+## 路由导航
+
+路由导航守卫,
+
+- `beforeEnter`
+  - 进入路由时，当前路由跳转前触发。
+  - 路由间跳转才会触发
+  - 嵌套函数中，父函数使用导航，子路由会继承。
+
+```javascript title='/src/router/index.js'
+const routes = [
+  {
+    path: "/users/:id",
+    component: UserDetails,
+    /**
+     * 可以使用数组形式传入路由函数
+     * 这样同一导航函数可以多次利用
+     * beforeEnter:[funA,funB]
+     */
+    beforeEnter: (to, from) => {
+      return false;
+    },
+  },
+];
+````
+
+:::note
+路由间跳转才会触发，指的是像 `/user/:id` 的动态路由，在 `/user/1`与`/user/2` 之间跳转不会触发
+:::
+
+## 组件导航
+
+在组件中定义路由的导航守卫
+
+- vue2
+  - `beforeRouteEnter`
+    - 渲染前调用
+    - 还没有创建组件实例，所以无法使用 `this` 来获取组件实例
+  - `beforeRouteUpdate`
+    - 复用改组件时调用，例如`/users/:id`，在 `/users/1` 和 `/users/2` 之间跳转的时候，
+  - `beforeRouteLeave`
+    - 离开当前组件时调用
+- vue3
+  - `onBeforeRouteUpdate`
+    - 复用改组件时调用
+  - `onBeforeRouteLeave`
+    - 离开当前组件时调用
+
+```js title='options'
+<script>
+export default {
+  beforeRouteEnter(to, from) {},
+  beforeRouteUpdate(to, from) {},
+  beforeRouteLeave(to, from) {},
+}
+</script>
+```
+
+```javascript title='components'
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
+
+// 与 beforeRouteLeave 相同，无法访问 `this`
+onBeforeRouteLeave((to, from) => {});
+
+// 与 beforeRouteUpdate 相同，无法访问 `this`
+onBeforeRouteUpdate(async (to, from) => {
+  //仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
+});
+```
+
+## 导航守卫执行顺序
+
+1. 导航守卫出发
+2. 跳转前组件中：`beforeRouteLeave`
+3. 全局：`beforeEach`
+4. 重用组件中：`beforeRouteUpdate`
+5. 路由跳转前：`beforeEnter`
+6. 解析异步路由组件
+7. 组件激活前：`beforeRouteEnter`
+8. 全局：`beforeResolve`
+9. 导航确认
+10. 全局：`afterEach`
+11. DOM 更新
+12. 调用 守卫中 回调函数，创建好的组件实例，会作为回调函数参数传入 `beforeRouteEnter next`
