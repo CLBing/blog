@@ -73,6 +73,8 @@ const config: Config = {
      */
     navbar: {
       title: "My Site",
+      // 向下滚动是否隐藏导航栏
+      hideOnScroll: true,
       logo: {
         alt: "My Site Logo",
         src: "img/logo.svg",
@@ -114,6 +116,19 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    async function myPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+          postcssOptions.plugins.push(require("autoprefixer"));
+          return postcssOptions;
+        },
+      };
+    },
+  ],
 };
 
 export default config;
