@@ -1,5 +1,5 @@
 ---
-id: kafka
+id: kafka-install
 slug: /kafka-install.md
 title: kafka 安装
 date: 2024-09-01
