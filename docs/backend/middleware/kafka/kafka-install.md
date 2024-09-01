@@ -1,4 +1,12 @@
-# kafka 安装
+---
+id: kafka
+slug: /kafka-install.md
+title: kafka 安装
+date: 2024-09-01
+tags: [kafka, install docker]
+keywords: [kafka, install,kraft]
+---
+ kafka 安装
 ## docker  单机安装
 
 ```yml
@@ -18,7 +26,7 @@ docker run -d --name kafka-server --hostname kafka-server \
 
 
 :::tip
-
+修改 `KAFKA_CFG_ADVERTISED_LISTENERS` 中 `EXTERNAL://localhost:9094` 的 `localhost` 改为服务器地址 
 1. bitnami/kafka 在 3.5.1 版本移除 KAFKA_ENABLE_KRAFT 来判断是否开启 kraft 
 2. 默认情况 必须配置 `KAFKA_CFG_PROCESS_ROLES ` 或 `KAFKA_CFG_ZOOKEEPER_CONNECT ` 才能启动 kafka
 
@@ -26,7 +34,7 @@ docker run -d --name kafka-server --hostname kafka-server \
 
 ## Kraft 环境配置
 
-| 配置环境名称                             | 描述                    |     |
+| 配置环境名称                             | 描述                    | 值  |
 | ---------------------------------------- | ----------------------- | --- |
 | KAFKA_CFG_NODE_ID                        | kafkaf 节点唯一id       |     |
 | KAFKA_CFG_PROCESS_ROLES                  | 逗号分隔 kraft 角色列表 |     |
