@@ -120,18 +120,6 @@ defineProps(
  *  ：Object,Function,Array
  */
 defineProps({
-    /**
-     * 基础类型检查
-     *      校验类型可以直接赋值类型，数组，对象
-     *      直接设置 指定接收参数类型
-     *      数组：则代表接受类型为数组内类型，有null则代表可以为null
-     *      对象：{type:[]} 对象中 type属性来设置校验类型
-     */
-    propA:Number,
-    propB:[String,Number,null],
-    propC:{
-        type: [String,Number,null],
-    },
 
 
     // 是否必填 ：required
